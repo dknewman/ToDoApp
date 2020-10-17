@@ -3,17 +3,34 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using ToDoApp.Models;
 
 
 namespace ToDoApp.ViewModels
 {
-   public class MainViewModel : INotifyPropertyChanged
-    {
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+   public class MainViewModel : BaseViewModel
+   {
+      
+        public int Id { get; set; }
+        public MainViewModel()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public MainViewModel(ToDoListModel toDoList)
+        {
+            Id = toDoList.ListModelId;
+            ListName = toDoList.ListName;
+        }
+
+        private string _listName;
+        public string ListName
+        {
+            get { return _listName; }
+            set
+            {
+                SetValue(ref _listName, value);
+                OnPropertyChanged(nameof(ListName));
+            }
         }
     }
 }
