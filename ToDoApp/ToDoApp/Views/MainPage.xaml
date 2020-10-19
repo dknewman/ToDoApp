@@ -2,17 +2,34 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="ToDoApp.Views.MainPage">
-
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add New List"
+                     Order="Secondary"
+                     Priority="0"
+                     Command="{Binding AddListCommand}"/>
+    </ContentPage.ToolbarItems>
     <StackLayout>
         <StackLayout x:Name="TopStack" VerticalOptions="StartAndExpand">
-            <Frame BackgroundColor="#2196F3" Padding="5" CornerRadius="0">
-                <Button x:Name= "ToolBarButton" HorizontalOptions="EndAndExpand" BackgroundColor="Transparent" TextColor =" White" Text="Add" FontAttributes="Bold" Clicked="ToolBarButton_OnClicked" ></Button>
+            <Grid BackgroundColor="#2196F3" >
+               <Grid.ColumnDefinitions>
+                   <ColumnDefinition Width="60*"/>
+                   <ColumnDefinition Width="40*"/>
+               </Grid.ColumnDefinitions>
+                <Frame Grid.Column="1" BackgroundColor="#2196F3" Padding="0" CornerRadius="0" BorderColor="Transparent" Margin="0,-10,0,0">
             </Frame>
-            <Label TextColor="Black" Text="HELLO WORLD!"></Label>
-             <ListView x:Name="myList" HasUnevenRows="true" ItemsSource="{Binding Rentals}" ItemSelected="MyList_OnItemSelected" SeparatorColor="Black">
+                <Frame Grid.Column="0" BackgroundColor="#2196F3" Padding="0" CornerRadius="0"  BorderColor="Transparent" Margin="0,-6,0,0">
+                <Label x:Name= "TitleLabel" Text="To Do List" FontSize="20"  HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="Transparent" TextColor =" White"  FontAttributes="Bold"></Label>
+            </Frame>
+           </Grid>
+            <ListView x:Name="myList" HasUnevenRows="true" ItemsSource="{Binding ToDoListModel}" ItemSelected="MyList_OnItemSelected" SeparatorColor="Black">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
+                            <ViewCell.ContextActions>
+                                <MenuItem Clicked="OnDelete"
+                                          CommandParameter="{Binding .}"
+                                          Text="Delete" IsDestructive="True" />
+                            </ViewCell.ContextActions>
                             <ViewCell.View>
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -25,19 +42,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-
-                                    <Image Source="{Binding ImageLink}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="3" HeightRequest="70" WidthRequest="70" HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"  />
-                                    <Label Text="{Binding RentalName}" Grid.Row="0" Grid.Column="1"  Grid.ColumnSpan="3" HorizontalOptions="Start" FontAttributes="Bold" Margin="0,10,0,0"/>
-                                    <Label Grid.Row="1" Grid.Column="1" Margin="0,-15,0,0" FontSize="10" TextColor="DarkGray">
-                                        <Label.FormattedText>
-                                            <FormattedString>
-                                                <Span Text="{Binding City}" />
-                                                 <Span Text=", " />
-                                                <Span Text="{Binding State}" />
-                                            </FormattedString>
-                                        </Label.FormattedText>
-                                    </Label>
-
+                                    <Label Text="{Binding ListName}" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" FontAttributes="Bold" Margin="5,10,0,0"/>
                                 </Grid>
                             </ViewCell.View>
                         </ViewCell>

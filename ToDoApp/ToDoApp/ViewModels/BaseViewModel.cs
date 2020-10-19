@@ -10,6 +10,13 @@ namespace ToDoApp.ViewModels
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+        bool _isBusy = false;
+        public bool IsBusy
+        {
+            get => _isBusy;
+            set => SetValue(ref _isBusy, value);
+        }
+
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
