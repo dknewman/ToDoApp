@@ -19,7 +19,6 @@ namespace ToDoApp.Views
         {
             InitializeComponent();
             BindingContext = _mainViewModel = new MainViewModel();
-            
         }
 
         private void ToolBarButton_OnClicked(object sender, EventArgs e)
@@ -30,7 +29,6 @@ namespace ToDoApp.Views
         private async void MyList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
             ToDoLists = (ToDoListModel)e.SelectedItem;
-            //do something///
             await Navigation.PushAsync(new ToDoListDetailPage());
         }
         protected override async void OnAppearing()
@@ -68,8 +66,6 @@ namespace ToDoApp.Views
 
                 await RefreshListView();
             }
-
-           
         }
     }
 }

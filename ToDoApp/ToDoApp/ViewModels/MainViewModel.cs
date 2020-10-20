@@ -14,16 +14,13 @@ namespace ToDoApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-       // public ObservableCollection<ToDoListModel> ToDoListsCollection { get; }
         public Command AddListCommand { get; }
  
         public Command<ToDoListModel> ListTapped { get; }
 
         public MainViewModel()
         {
-            //ToDoListsCollection = new ObservableCollection<ToDoListModel>();
             AddListCommand = new Command(OnAddList);
-           
         }
 
         private async void OnAddList(object obj)
@@ -32,7 +29,6 @@ namespace ToDoApp.ViewModels
         }
 
         private string _listName;
-
         public string ListName
         {
             get => _listName;
@@ -47,7 +43,5 @@ namespace ToDoApp.ViewModels
         {
             IsBusy = true;
         }
-
-      
     }
 }
