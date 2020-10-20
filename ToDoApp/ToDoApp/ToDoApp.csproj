@@ -11,16 +11,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.0-rc.2.20475.6" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="sqlite-net-pcl" Version="1.7.335" />
-    <PackageReference Include="SQLiteNetExtensions" Version="2.1.0" />
     <PackageReference Include="Xamarin.Forms" Version="4.8.0.1451" />
     <PackageReference Include="Xamarin.Essentials" Version="1.5.3.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\ListDetailPage.xaml.cs">
-      <DependentUpon>ListDetailPage.xaml</DependentUpon>
+    <Compile Update="Views\CreateNewItemPage.xaml.cs">
+      <DependentUpon>CreateNewItemPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\ToDoListDetailPage.xaml.cs">
+      <DependentUpon>ToDoListDetailPage.xaml</DependentUpon>
     </Compile>
     <Compile Update="Views\CreateNewListPage.xaml.cs">
       <DependentUpon>CreateNewListPage.xaml</DependentUpon>
@@ -28,7 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\ListDetailPage.xaml">
+    <EmbeddedResource Update="Views\ToDoListDetailPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\CreateNewListPage.xaml">

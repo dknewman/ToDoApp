@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using ToDoApp.Helpers;
+using Microsoft.EntityFrameworkCore;
+using ToDoApp.Context;
 using ToDoApp.Models;
 using ToDoApp.ViewModels;
 using Xamarin.Forms;
@@ -13,10 +14,12 @@ namespace ToDoApp.Views
     public partial class MainPage : ContentPage
     {
         public MainViewModel _mainViewModel;
+        public static ToDoListModel ToDoLists { get; set; }
         public MainPage()
         {
             InitializeComponent();
             BindingContext = _mainViewModel = new MainViewModel();
+            
         }
 
         private void ToolBarButton_OnClicked(object sender, EventArgs e)
@@ -26,10 +29,9 @@ namespace ToDoApp.Views
 
         private async void MyList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+            ToDoLists = (ToDoListModel)e.SelectedItem;
             //do something///
-            await Navigation.PushAsync(new ListDetailPage());
-
-            Debug.Write("Tappa tappa tappa");
+            await Navigation.PushAsync(new ToDoListDetailPage());
         }
         protected override async void OnAppearing()
         {
@@ -40,7 +42,13 @@ namespace ToDoApp.Views
 
         private async Task RefreshListView()
         {
-            myList.ItemsSource = await App.Database.GetListAsync();
+            //myList.ItemsSource = await App.Database.GetListAsync();
+
+            using (var toDoContext = new ToDoContext())
+            {
+                myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
+            }
+
         }
 
         public async void OnDelete(object sender, EventArgs e)
@@ -52,9 +60,13 @@ namespace ToDoApp.Views
 
            if (deleteConfirmation)
            {
-               int getListId = ToDoDelete.ListModelId;
-               await App.Database.RemoveToDoListEntry(ToDoDelete);
-               await RefreshListView();
+               using (var toDoContext = new ToDoContext())
+               {
+                   toDoContext.Remove(ToDoDelete);
+                   await toDoContext.SaveChangesAsync();
+               }
+
+                await RefreshListView();
             }
 
            

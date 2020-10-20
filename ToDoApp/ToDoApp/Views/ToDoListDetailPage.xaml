@@ -1,27 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="ToDoApp.Views.MainPage">
+             xmlns:viewModels="clr-namespace:ToDoApp.ViewModels;assembly=ToDoApp"
+             xmlns:models="clr-namespace:ToDoApp.Models;assembly=ToDoApp"
+             x:Class="ToDoApp.Views.ToDoListDetailPage"
+             Title="{Binding Title}">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Add New List"
-                     Order="Secondary"
+        <ToolbarItem Text="Add New ToDo Item"
+                     Order="Primary"
                      Priority="0"
-                     Command="{Binding AddListCommand}"/>
+                     Command="{Binding AddToDoListItemCommand}"/>
     </ContentPage.ToolbarItems>
     <StackLayout>
         <StackLayout x:Name="TopStack" VerticalOptions="StartAndExpand">
-            <Grid BackgroundColor="#2196F3" >
-               <Grid.ColumnDefinitions>
-                   <ColumnDefinition Width="60*"/>
-                   <ColumnDefinition Width="40*"/>
-               </Grid.ColumnDefinitions>
-                <Frame Grid.Column="1" BackgroundColor="#2196F3" Padding="0" CornerRadius="0" BorderColor="Transparent" Margin="0,-10,0,0">
-            </Frame>
-                <Frame Grid.Column="0" BackgroundColor="#2196F3" Padding="0" CornerRadius="0"  BorderColor="Transparent" Margin="0,-6,0,0">
-                <Label x:Name= "TitleLabel" Text="To Do List" FontSize="20"  HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="Transparent" TextColor =" White"  FontAttributes="Bold"></Label>
-            </Frame>
-           </Grid>
-            <ListView x:Name="myList" HasUnevenRows="true"  ItemSelected="MyList_OnItemSelected" SeparatorColor="Black">
+            <ListView x:Name="myList" HasUnevenRows="true"  SeparatorColor="Black">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -42,7 +34,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="{Binding ListName}" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" FontAttributes="Bold" Margin="5,10,0,0"/>
+                                    <Label Text="{Binding ToDoItem}" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" FontAttributes="Bold" Margin="5,10,0,0"/>
                                 </Grid>
                             </ViewCell.View>
                         </ViewCell>
@@ -51,8 +43,5 @@
             </ListView>
         </StackLayout>
     </StackLayout>
-
-
-
 
 </ContentPage>

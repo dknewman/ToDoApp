@@ -14,14 +14,14 @@ namespace ToDoApp.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
-        public ObservableCollection<ToDoListModel> ToDoListsCollection { get; }
+       // public ObservableCollection<ToDoListModel> ToDoListsCollection { get; }
         public Command AddListCommand { get; }
  
         public Command<ToDoListModel> ListTapped { get; }
 
         public MainViewModel()
         {
-            ToDoListsCollection = new ObservableCollection<ToDoListModel>();
+            //ToDoListsCollection = new ObservableCollection<ToDoListModel>();
             AddListCommand = new Command(OnAddList);
            
         }

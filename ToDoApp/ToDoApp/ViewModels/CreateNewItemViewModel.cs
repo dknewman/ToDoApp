@@ -1,16 +1,21 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using Microsoft.EntityFrameworkCore;
 using ToDoApp.Context;
 using ToDoApp.Models;
 using Xamarin.Forms;
+using ToDoApp.Views;
 
 namespace ToDoApp.ViewModels
 {
-    class CreateNewListViewModel : BaseViewModel
+    class CreateNewItemViewModel : BaseViewModel
     {
-        private string _newListName;
+        private string _newListItem;
 
-        public CreateNewListViewModel()
+        public CreateNewItemViewModel()
         {
             SaveCommand = new Command(OnSave, ValidateSave);
             CancelCommand = new Command(OnCancel);
@@ -20,14 +25,14 @@ namespace ToDoApp.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(_newListName);
+            return !String.IsNullOrWhiteSpace(_newListItem);
 
         }
 
-        public string NewListName
+        public string NewListItem
         {
-            get => _newListName;
-            set => SetValue(ref _newListName, value);
+            get => _newListItem;
+            set => SetValue(ref _newListItem, value);
         }
 
 
@@ -42,22 +47,22 @@ namespace ToDoApp.ViewModels
 
         private async void OnSave()
         {
-            //await App.Database.SaveToDoListAsync(new ToDoListModel
-            //{
-
-            //    ListName = NewListName
-
-            //});
-            var addToDoList = new ToDoListModel
+ 
+            var newToDoItem = new ToDoItemModel()
             {
-                ListName = NewListName
+                ToDoItem = NewListItem
             };
 
             using (var toDoContext = new ToDoContext())
             {
-                toDoContext.Add(addToDoList);
+                var toDoList = await toDoContext
+                    .ToDoListModel
+                    .FirstOrDefaultAsync(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId);
+
+                toDoList.ToDoItems.Add(newToDoItem);
                 await toDoContext.SaveChangesAsync();
             }
+          
 
             Debug.WriteLine("Save Command Hit");
             // This will pop the current page off the navigation stack
