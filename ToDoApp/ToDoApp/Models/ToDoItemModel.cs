@@ -10,5 +10,6 @@ namespace ToDoApp.Models
         public string ToDoItem { get; set; }
         public int ToDoListModelId { get; set; }
         public ToDoListModel ToDoListModel { get; set; }
+        public DateTime LastUpdate { get; set; }
     }
 }

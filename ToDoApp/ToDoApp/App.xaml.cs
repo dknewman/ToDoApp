@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using ToDoApp.Services;
 using ToDoApp.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -12,6 +13,8 @@ namespace ToDoApp
         {
             InitializeComponent();
             MainPage = new NavigationPage(new MainPage());
+            var cs = new ConnectivityService();
+            cs.CheckConnectivity();
         }
 
         

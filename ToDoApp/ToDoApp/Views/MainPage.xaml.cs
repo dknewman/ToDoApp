@@ -40,8 +40,6 @@ namespace ToDoApp.Views
 
         private async Task RefreshListView()
         {
-            //myList.ItemsSource = await App.Database.GetListAsync();
-
             using (var toDoContext = new ToDoContext())
             {
                 myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();

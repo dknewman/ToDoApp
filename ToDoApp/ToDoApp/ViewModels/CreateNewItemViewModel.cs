@@ -35,7 +35,6 @@ namespace ToDoApp.ViewModels
             set => SetValue(ref _newListItem, value);
         }
 
-
         public Command SaveCommand { get; }
         public Command CancelCommand { get; }
 
@@ -50,7 +49,8 @@ namespace ToDoApp.ViewModels
  
             var newToDoItem = new ToDoItemModel()
             {
-                ToDoItem = NewListItem
+                ToDoItem = NewListItem,
+                LastUpdate = DateTime.Now
             };
 
             using (var toDoContext = new ToDoContext())
@@ -62,9 +62,6 @@ namespace ToDoApp.ViewModels
                 toDoList.ToDoItems.Add(newToDoItem);
                 await toDoContext.SaveChangesAsync();
             }
-          
-
-            Debug.WriteLine("Save Command Hit");
             // This will pop the current page off the navigation stack
             await Application.Current.MainPage.Navigation.PopModalAsync(true);
         }

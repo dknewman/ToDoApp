@@ -28,14 +28,8 @@ namespace ToDoApp.Views
             await RefreshListView();
         }
 
-        private void OnDelete(object sender, EventArgs e)
-        {
-            //throw new NotImplementedException();
-        }
-
         private async Task RefreshListView()
         {
-            //myList.ItemsSource = await App.Database.GetListAsync();
             try
             {
                 await using (var toDoContext = new ToDoContext())
@@ -51,6 +45,24 @@ namespace ToDoApp.Views
             catch (Exception ex)
             {
                 Debug.WriteLine(ex);
+            }
+        }
+        public async void OnDelete(object sender, EventArgs e)
+        {
+            var mi = ((MenuItem)sender);
+            ToDoItemModel ToDoDelete = new ToDoItemModel();
+            ToDoDelete = (ToDoItemModel)mi.CommandParameter;
+            var deleteConfirmation = await DisplayAlert("Delete ToDo Item", "Are you sure you want to delete " + ToDoDelete.ToDoItem + "?", "OK", "Cancel");
+
+            if (deleteConfirmation)
+            {
+                using (var toDoContext = new ToDoContext())
+                {
+                    toDoContext.Remove(ToDoDelete);
+                    await toDoContext.SaveChangesAsync();
+                }
+
+                await RefreshListView();
             }
         }
     }

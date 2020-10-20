@@ -42,15 +42,10 @@ namespace ToDoApp.ViewModels
 
         private async void OnSave()
         {
-            //await App.Database.SaveToDoListAsync(new ToDoListModel
-            //{
-
-            //    ListName = NewListName
-
-            //});
             var addToDoList = new ToDoListModel
             {
-                ListName = NewListName
+                ListName = NewListName,
+                LastUpdate = DateTime.Now
             };
 
             using (var toDoContext = new ToDoContext())

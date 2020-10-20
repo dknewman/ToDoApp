@@ -11,6 +11,7 @@ namespace ToDoApp.Models
         public int ToDoListModelId { get; set; }
         public string ListName { get; set; }
         public List<ToDoItemModel> ToDoItems { get; set; } = new List<ToDoItemModel>();
+        public DateTime LastUpdate { get; set; }
 
 
     }
