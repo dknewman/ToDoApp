@@ -1,9 +1,11 @@
-﻿using Xamarin.Essentials;
+﻿using System.Diagnostics;
+using Xamarin.Essentials;
 
 namespace ToDoApp.Services
 {
     public class ConnectivityService
     {
+                
         public ConnectivityService()
         {
            
@@ -18,7 +20,8 @@ namespace ToDoApp.Services
         void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             var access = e.NetworkAccess;
-            var profiles = e.ConnectionProfiles;
+     
+
         }
     }
 }

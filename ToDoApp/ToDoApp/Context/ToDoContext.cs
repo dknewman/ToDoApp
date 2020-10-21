@@ -23,7 +23,6 @@ namespace ToDoApp.Context
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             string dbPath = Path.Combine(FileSystem.AppDataDirectory, "ToDoList.db3");
-
             optionsBuilder
                 .UseSqlite($"Filename={dbPath}");
         }
