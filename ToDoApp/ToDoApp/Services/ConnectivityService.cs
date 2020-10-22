@@ -13,15 +13,13 @@ namespace ToDoApp.Services
 
         public void CheckConnectivity()
         {
-            // Register for connectivity changes, be sure to unsubscribe when finished
+            // Subscribe for connectivity changes
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
         }
 
         void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             var access = e.NetworkAccess;
-     
-
         }
     }
 }

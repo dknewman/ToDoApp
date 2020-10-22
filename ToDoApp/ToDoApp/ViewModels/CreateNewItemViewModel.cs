@@ -1,19 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ToDoApp.Context;
 using ToDoApp.Models;
+using ToDoApp.Persistence;
 using Xamarin.Forms;
 using ToDoApp.Views;
+using static System.String;
 
 namespace ToDoApp.ViewModels
 {
-    class CreateNewItemViewModel : BaseViewModel
+    public class CreateNewItemViewModel : BaseViewModel
     {
-        private string _newListItem;
+        public static string NewItem;
 
         public CreateNewItemViewModel()
         {
@@ -25,14 +27,13 @@ namespace ToDoApp.ViewModels
 
         private bool ValidateSave()
         {
-            return !String.IsNullOrWhiteSpace(_newListItem);
-
+            return !IsNullOrWhiteSpace(NewItem);
         }
 
         public string NewListItem
         {
-            get => _newListItem;
-            set => SetValue(ref _newListItem, value);
+            get => NewItem;
+            set => SetValue(ref NewItem, value);
         }
 
         public Command SaveCommand { get; }
@@ -41,28 +42,15 @@ namespace ToDoApp.ViewModels
         private async void OnCancel()
         {
             // This will pop the current page off the navigation stack
+            NewItem = Empty;
             await Application.Current.MainPage.Navigation.PopModalAsync(true);
         }
 
         private async void OnSave()
         {
- 
-            var newToDoItem = new ToDoItemModel()
-            {
-                ToDoItem = NewListItem,
-                LastUpdate = DateTime.Now
-            };
-
-            using (var toDoContext = new ToDoContext())
-            {
-                var toDoList = await toDoContext
-                    .ToDoListModel
-                    .FirstOrDefaultAsync(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId);
-
-                toDoList.ToDoItems.Add(newToDoItem);
-                await toDoContext.SaveChangesAsync();
-            }
+            await DataAccess.SaveNewListItem();
             // This will pop the current page off the navigation stack
+            NewItem = Empty;
             await Application.Current.MainPage.Navigation.PopModalAsync(true);
         }
     }

@@ -8,7 +8,7 @@ using Xamarin.Essentials;
 
 namespace ToDoApp.Context
 {
-    public class ToDoContext: DbContext
+    public sealed class ToDoContext: DbContext
     {
         public DbSet<ToDoListModel> ToDoListModel { get; set; }
         public DbSet<ToDoItemModel> ToDoItemModel { get; set; }

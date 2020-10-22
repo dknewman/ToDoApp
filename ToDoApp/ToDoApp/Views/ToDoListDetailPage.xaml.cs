@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ToDoApp.Context;
 using ToDoApp.Models;
+using ToDoApp.Persistence;
 using ToDoApp.ViewModels;
 using Xamarin.Forms;
 
@@ -14,7 +15,7 @@ namespace ToDoApp.Views
 {
     public partial class ToDoListDetailPage : ContentPage
     {
-        private ToDoListDetailViewModel _toDoListDetailViewModel;
+        private readonly ToDoListDetailViewModel _toDoListDetailViewModel;
         public ToDoListDetailPage()
         {
             InitializeComponent();
@@ -32,15 +33,11 @@ namespace ToDoApp.Views
         {
             try
             {
-                await using (var toDoContext = new ToDoContext())
-                {
-                    var itemList = toDoContext.ToDoItemModel
-                        .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
-                        .ToList();
-
-                    myList.ItemsSource = itemList;
-
-                }
+                await using var toDoContext = new ToDoContext();
+                var itemList = toDoContext.ToDoItemModel
+                    .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
+                    .ToList();
+                myList.ItemsSource = itemList;
             }
             catch (Exception ex)
             {
@@ -50,18 +47,11 @@ namespace ToDoApp.Views
         public async void OnDelete(object sender, EventArgs e)
         {
             var mi = ((MenuItem)sender);
-            ToDoItemModel ToDoDelete = new ToDoItemModel();
-            ToDoDelete = (ToDoItemModel)mi.CommandParameter;
-            var deleteConfirmation = await DisplayAlert("Delete ToDo Item", "Are you sure you want to delete " + ToDoDelete.ToDoItem + "?", "OK", "Cancel");
-
+            var toDoDelete = (ToDoItemModel)mi.CommandParameter;
+            var deleteConfirmation = await DisplayAlert("Delete ToDo Item", "Are you sure you want to delete " + toDoDelete.ToDoItem + "?", "OK", "Cancel");
             if (deleteConfirmation)
             {
-                using (var toDoContext = new ToDoContext())
-                {
-                    toDoContext.Remove(ToDoDelete);
-                    await toDoContext.SaveChangesAsync();
-                }
-
+                await DataAccess.DeleteToDoItem(toDoDelete);
                 await RefreshListView();
             }
         }
