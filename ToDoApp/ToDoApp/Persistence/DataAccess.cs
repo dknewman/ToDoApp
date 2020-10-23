@@ -30,7 +30,6 @@ namespace ToDoApp.Persistence
 
         public static async Task SaveNewListItem()
         {
-            var toDoItemModel = new CreateNewItemViewModel();
             var newToDoItem = new ToDoItemModel()
             {
                

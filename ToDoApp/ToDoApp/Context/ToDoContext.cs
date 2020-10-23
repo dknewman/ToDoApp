@@ -16,7 +16,6 @@ namespace ToDoApp.Context
         public ToDoContext()
         {
             SQLitePCL.Batteries_V2.Init();
-
             this.Database.EnsureCreated();
         }
 

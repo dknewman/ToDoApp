@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using ToDoApp.Context;
 using ToDoApp.Models;
 using ToDoApp.Persistence;
@@ -38,6 +39,7 @@ namespace ToDoApp.Views
                     .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
                     .ToList();
                 myList.ItemsSource = itemList;
+                string jsonData = JsonConvert.SerializeObject(itemList);
             }
             catch (Exception ex)
             {
