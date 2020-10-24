@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using RestSharp;
 using ToDoApp.Context;
 using ToDoApp.Models;
 using ToDoApp.Persistence;
+using ToDoApp.Services;
 using ToDoApp.ViewModels;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -29,17 +32,8 @@ namespace ToDoApp.Views
         {
             ToDoLists = (ToDoListModel)e.SelectedItem;
             await Navigation.PushAsync(new ToDoListDetailPage());
-            var client = new HttpClient();
-            client.BaseAddress = new Uri("https://www.ghostshaman.com/");
-
-            string jsonData = JsonConvert.SerializeObject(ToDoLists);
-
-            var content = new StringContent(jsonData, Encoding.UTF8, "application/json");
-            HttpResponseMessage response = await client.PostAsync("/todo/PostToDoList", content);
-
-            // this result string should be something like: "{"token":"rgh2ghgdsfds"}"
-            var result = await response.Content.ReadAsStringAsync();
         }
+
         protected override async void OnAppearing()
         {
             base.OnAppearing();
@@ -51,6 +45,8 @@ namespace ToDoApp.Views
         {
             await using var toDoContext = new ToDoContext();
             myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
+            var httpService = new HttpService();
+            httpService.PostToServer(toDoContext.ToDoListModel);
         }
 
         public async void OnDelete(object sender, EventArgs e)
