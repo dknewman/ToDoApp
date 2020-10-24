@@ -1,20 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ToDoApp.Context;
 using ToDoApp.Models;
 using ToDoApp.ViewModels;
 using ToDoApp.Views;
-using Xamarin.Forms;
 
-namespace ToDoApp.Persistence
+namespace ToDoApp.Services
 {
-    public class DataAccess
+    public class DataService
     {
-        
         public static async Task SaveNewList()
         {
             var addToDoList = new ToDoListModel
@@ -26,13 +21,14 @@ namespace ToDoApp.Persistence
             await using var toDoContext = new ToDoContext();
             toDoContext.Add(addToDoList);
             await toDoContext.SaveChangesAsync();
+            var httpService = new HttpService();
+            httpService.PostToServer(toDoContext.ToDoListModel);
         }
 
         public static async Task SaveNewListItem()
         {
             var newToDoItem = new ToDoItemModel()
             {
-               
                 ToDoItem = CreateNewItemViewModel.NewItem,                
                 LastUpdate = DateTime.Now
             };
@@ -44,6 +40,7 @@ namespace ToDoApp.Persistence
 
             toDoList.ToDoItems.Add(newToDoItem);
             await toDoContext.SaveChangesAsync();
+
         }
 
         public static async Task DeleteToDoList(ToDoListModel toDoDelete)

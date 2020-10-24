@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using ToDoApp.Context;
 using ToDoApp.Models;
-using ToDoApp.Persistence;
+using ToDoApp.Services;
 using Xamarin.Forms;
 using ToDoApp.Views;
 using static System.String;
@@ -48,7 +48,7 @@ namespace ToDoApp.ViewModels
 
         private async void OnSave()
         {
-            await DataAccess.SaveNewListItem();
+            await DataService.SaveNewListItem();
             // This will pop the current page off the navigation stack
             NewItem = Empty;
             await Application.Current.MainPage.Navigation.PopModalAsync(true);

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using ToDoApp.Context;
 using ToDoApp.Models;
-using ToDoApp.Persistence;
+using ToDoApp.Services;
 using ToDoApp.ViewModels;
 using Xamarin.Forms;
 
@@ -53,7 +53,7 @@ namespace ToDoApp.Views
             var deleteConfirmation = await DisplayAlert("Delete ToDo Item", "Are you sure you want to delete " + toDoDelete.ToDoItem + "?", "OK", "Cancel");
             if (deleteConfirmation)
             {
-                await DataAccess.DeleteToDoItem(toDoDelete);
+                await DataService.DeleteToDoItem(toDoDelete);
                 await RefreshListView();
             }
         }

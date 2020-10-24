@@ -7,10 +7,6 @@
                      Order="Secondary"
                      Priority="0"
                      Command="{Binding AddListCommand}"/>
-        <ToolbarItem Text="POST"
-                     Order="Secondary"
-                     Priority="1"
-                     Clicked="MenuItem_OnClicked"/>
     </ContentPage.ToolbarItems>
     <StackLayout>
         <StackLayout x:Name="TopStack" VerticalOptions="StartAndExpand">

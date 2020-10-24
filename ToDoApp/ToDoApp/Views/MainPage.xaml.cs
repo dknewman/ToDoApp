@@ -10,7 +10,6 @@ using Newtonsoft.Json;
 using RestSharp;
 using ToDoApp.Context;
 using ToDoApp.Models;
-using ToDoApp.Persistence;
 using ToDoApp.Services;
 using ToDoApp.ViewModels;
 using Xamarin.Forms;
@@ -45,8 +44,6 @@ namespace ToDoApp.Views
         {
             await using var toDoContext = new ToDoContext();
             myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
-            var httpService = new HttpService();
-            httpService.PostToServer(toDoContext.ToDoListModel);
         }
 
         public async void OnDelete(object sender, EventArgs e)
@@ -56,14 +53,9 @@ namespace ToDoApp.Views
             var deleteConfirmation = await DisplayAlert("Delete ToDo List", "Are you sure you want to delete " + toDoDelete.ListName + "?", "OK", "Cancel");
             if (deleteConfirmation)
             {
-                await DataAccess.DeleteToDoList(toDoDelete);
+                await DataService.DeleteToDoList(toDoDelete);
                 await RefreshListView();
             }
-        }
-
-        private void MenuItem_OnClicked(object sender, EventArgs e)
-        {
-            //
         }
     }
 }
