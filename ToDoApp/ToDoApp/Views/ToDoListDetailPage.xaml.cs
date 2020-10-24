@@ -38,7 +38,8 @@ namespace ToDoApp.Views
                 var itemList = toDoContext.ToDoItemModel
                     .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
                     .ToList();
-                myList.ItemsSource = itemList;
+                //myList.ItemsSource = itemList;
+                myList.ItemsSource = await HttpService.GetTodoItemTask(MainPage.ToDoLists.ToDoListModelId);
             }
             catch (Exception ex)
             {

@@ -58,10 +58,12 @@ namespace ToDoApp.Views
             }
         }
 
-        private void MenuItem_OnClicked(object sender, EventArgs e)
+        private async void MenuItem_OnClicked(object sender, EventArgs e)
         {
-            var httpService = new HttpService();
-            httpService.GetToDoListsOrItems("ToDoListModel");
+            myList.ItemsSource = await HttpService.GetToDoListTask();
+
+
+            Debug.WriteLine("");
         }
     }
 }
