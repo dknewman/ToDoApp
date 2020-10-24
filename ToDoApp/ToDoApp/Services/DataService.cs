@@ -21,8 +21,7 @@ namespace ToDoApp.Services
             await using var toDoContext = new ToDoContext();
             toDoContext.Add(addToDoList);
             await toDoContext.SaveChangesAsync();
-            var httpService = new HttpService();
-            httpService.PostToServer(toDoContext.ToDoListModel);
+            PostToDoList(toDoContext);
         }
 
         public static async Task SaveNewListItem()
@@ -40,14 +39,17 @@ namespace ToDoApp.Services
 
             toDoList.ToDoItems.Add(newToDoItem);
             await toDoContext.SaveChangesAsync();
-
+            PostToDoItem(toDoContext);
         }
+
 
         public static async Task DeleteToDoList(ToDoListModel toDoDelete)
         {
             await using var toDoContext = new ToDoContext();
             toDoContext.Remove(toDoDelete);
             await toDoContext.SaveChangesAsync();
+            PostToDoList(toDoContext);
+            PostToDoItem(toDoContext);
         }
 
         public static async Task DeleteToDoItem(ToDoItemModel toDoDelete)
@@ -55,6 +57,19 @@ namespace ToDoApp.Services
             await using var toDoContext = new ToDoContext();
             toDoContext.Remove(toDoDelete);
             await toDoContext.SaveChangesAsync();
+            PostToDoItem(toDoContext);
+        }
+
+        private static void PostToDoList(ToDoContext toDoContext)
+        {
+            var httpService = new HttpService();
+            httpService.PostToServer(toDoContext.ToDoListModel, "PostToDoList");
+        }
+
+        private static void PostToDoItem(ToDoContext toDoContext)
+        {
+            var httpService = new HttpService();
+            httpService.PostToServer(toDoContext.ToDoItemModel, "PostToDoItem");
         }
     }
 

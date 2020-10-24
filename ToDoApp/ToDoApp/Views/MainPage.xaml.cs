@@ -57,5 +57,11 @@ namespace ToDoApp.Views
                 await RefreshListView();
             }
         }
+
+        private void MenuItem_OnClicked(object sender, EventArgs e)
+        {
+            var httpService = new HttpService();
+            httpService.GetToDoListsOrItems("ToDoListModel");
+        }
     }
 }

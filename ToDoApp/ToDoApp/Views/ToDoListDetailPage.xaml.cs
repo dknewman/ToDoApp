@@ -39,7 +39,6 @@ namespace ToDoApp.Views
                     .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
                     .ToList();
                 myList.ItemsSource = itemList;
-                string jsonData = JsonConvert.SerializeObject(itemList);
             }
             catch (Exception ex)
             {
