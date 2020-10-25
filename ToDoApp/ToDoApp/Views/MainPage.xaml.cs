@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,7 @@ using ToDoApp.Models;
 using ToDoApp.Services;
 using ToDoApp.ViewModels;
 using Xamarin.Forms;
+using Xamarin.Forms.Markup;
 using Xamarin.Forms.Xaml;
 
 namespace ToDoApp.Views
@@ -29,8 +31,10 @@ namespace ToDoApp.Views
 
         private async void MyList_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
+
             ToDoLists = (ToDoListModel)e.SelectedItem;
             await Navigation.PushAsync(new ToDoListDetailPage());
+
         }
 
         protected override async void OnAppearing()
@@ -45,6 +49,10 @@ namespace ToDoApp.Views
             if (ConnectivityService.HasInternet)
             {
                 myList.ItemsSource = await HttpService.GetToDoListTask();
+                if (!myList.ItemsSource.OfType<ToDoListModel>().Any())
+                {
+                    await DisplayAlert("Welcome to the ToDo App!", "Add a new list and get started", "OK");
+                }
             }
             else
             {

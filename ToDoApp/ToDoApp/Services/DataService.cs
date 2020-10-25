@@ -12,7 +12,7 @@ namespace ToDoApp.Services
 {
     public class DataService
     {
-        
+
         public static async Task SaveNewList()
         {
             var addToDoList = new ToDoListModel
@@ -31,7 +31,7 @@ namespace ToDoApp.Services
         {
             var newToDoItem = new ToDoItemModel()
             {
-                ToDoItem = CreateNewItemViewModel.NewItem,                
+                ToDoItem = CreateNewItemViewModel.NewItem,
                 LastUpdate = DateTime.Now
             };
 
@@ -52,7 +52,6 @@ namespace ToDoApp.Services
             toDoContext.Remove(toDoDelete);
             await toDoContext.SaveChangesAsync();
             PostToDoList(toDoContext);
-            PostToDoItem(toDoContext);
         }
 
         public static async Task DeleteToDoItem(ToDoItemModel toDoDelete)
@@ -69,7 +68,7 @@ namespace ToDoApp.Services
             httpService.PostToServer(toDoContext.ToDoListModel, "PostToDoList");
         }
 
-        private static void PostToDoItem(ToDoContext toDoContext)
+        public static void PostToDoItem(ToDoContext toDoContext)
         {
             var httpService = new HttpService();
             httpService.PostToServer(toDoContext.ToDoItemModel, "PostToDoItem");
