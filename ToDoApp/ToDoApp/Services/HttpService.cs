@@ -11,14 +11,24 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestSharp;
+using ToDoApp.Context;
 using ToDoApp.Models;
+using ToDoApp.Views;
 
 namespace ToDoApp.Services
 {
     public class HttpService
     {
-       
+
         public void PostToServer(object listOrItemObject, string postType)
+        {
+            if (ConnectivityService.HasInternet)
+            {
+                PostData(listOrItemObject, postType);
+            }
+        }
+
+        private static void PostData(object listOrItemObject, string postType)
         {
             string jsonData = JsonConvert.SerializeObject(listOrItemObject);
             var convertedJsonStr = JsonConvert.ToString(jsonData);
@@ -28,18 +38,16 @@ namespace ToDoApp.Services
             request.AddHeader("Content-Type", "application/json");
             request.AddParameter("application/json", convertedJsonStr, ParameterType.RequestBody);
             IRestResponse response = client.Execute(request);
-            Console.WriteLine(response.Content);
-
         }
 
         public static async Task<ObservableCollection<ToDoListModel>> GetToDoListTask()
         {
-            
             ObservableCollection<ToDoListModel> toDoListObject = new ObservableCollection<ToDoListModel>();
             HttpClient hc = new HttpClient();
             var listUrl = "https://davidnewman.pro/todo/GetToDoList";
             var listContents = await hc.GetStringAsync(listUrl);
             toDoListObject = JsonConvert.DeserializeObject<ObservableCollection<ToDoListModel>>(listContents);
+
             return toDoListObject;
         }
 
@@ -53,5 +61,17 @@ namespace ToDoApp.Services
 
             return toDoItemObject;
         }
+        public static async Task<ToDoListModel> GetToDoListModel()
+        {
+            var toDoListObject = new ToDoListModel();
+            HttpClient hc = new HttpClient();
+            var listUrl = "https://davidnewman.pro/todo/GetToDoList";
+            var listContents = await hc.GetStringAsync(listUrl);
+            toDoListObject = JsonConvert.DeserializeObject<ToDoListModel>(listContents);
+
+            return toDoListObject;
+        }
+
+
     }
 }

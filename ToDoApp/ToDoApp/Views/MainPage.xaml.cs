@@ -42,8 +42,15 @@ namespace ToDoApp.Views
 
         private async Task RefreshListView()
         {
-            await using var toDoContext = new ToDoContext();
-            myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
+            if (ConnectivityService.HasInternet)
+            {
+                myList.ItemsSource = await HttpService.GetToDoListTask();
+            }
+            else
+            {
+                await using var toDoContext = new ToDoContext();
+                myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
+            }
         }
 
         public async void OnDelete(object sender, EventArgs e)
@@ -58,12 +65,5 @@ namespace ToDoApp.Views
             }
         }
 
-        private async void MenuItem_OnClicked(object sender, EventArgs e)
-        {
-            myList.ItemsSource = await HttpService.GetToDoListTask();
-
-
-            Debug.WriteLine("");
-        }
     }
 }

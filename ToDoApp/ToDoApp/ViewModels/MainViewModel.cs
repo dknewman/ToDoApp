@@ -16,8 +16,6 @@ namespace ToDoApp.ViewModels
     {
         public Command AddListCommand { get; }
  
-        public Command<ToDoListModel> ListTapped { get; }
-
         public MainViewModel()
         {
             AddListCommand = new Command(OnAddList);

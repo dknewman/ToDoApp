@@ -41,16 +41,16 @@ namespace ToDoApp.ViewModels
 
         private async void OnCancel()
         {
-            // This will pop the current page off the navigation stack
             NewItem = Empty;
+            // This will pop the current page off the navigation stack
             await Application.Current.MainPage.Navigation.PopModalAsync(true);
         }
 
         private async void OnSave()
         {
             await DataService.SaveNewListItem();
-            // This will pop the current page off the navigation stack
             NewItem = Empty;
+            // This will pop the current page off the navigation stack
             await Application.Current.MainPage.Navigation.PopModalAsync(true);
         }
     }

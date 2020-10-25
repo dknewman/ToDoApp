@@ -34,15 +34,22 @@ namespace ToDoApp.Views
         {
             try
             {
-                await using var toDoContext = new ToDoContext();
-                var itemList = toDoContext.ToDoItemModel
-                    .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
-                    .ToList();
-                //myList.ItemsSource = itemList;
-                myList.ItemsSource = await HttpService.GetTodoItemTask(MainPage.ToDoLists.ToDoListModelId);
+                if (ConnectivityService.HasInternet == true)
+                {
+                    myList.ItemsSource = await HttpService.GetTodoItemTask(MainPage.ToDoLists.ToDoListModelId);
+                }
+                else
+                {
+                    await using var toDoContext = new ToDoContext();
+                    var itemList = toDoContext.ToDoItemModel
+                        .Where(x => x.ToDoListModelId == MainPage.ToDoLists.ToDoListModelId)
+                        .ToList();
+                    myList.ItemsSource = itemList;
+                }
             }
             catch (Exception ex)
             {
+                //Handle exception - Typically I use a service like rollbar 
                 Debug.WriteLine(ex);
             }
         }

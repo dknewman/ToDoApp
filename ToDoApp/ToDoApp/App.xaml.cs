@@ -2,6 +2,7 @@
 using System.IO;
 using ToDoApp.Services;
 using ToDoApp.Views;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -14,12 +15,12 @@ namespace ToDoApp
             InitializeComponent();
             MainPage = new NavigationPage(new MainPage());
             var cs = new ConnectivityService();
-            cs.CheckConnectivity();
+            cs.ConnectivityEvent();
         }
 
-        
         protected override void OnStart()
         {
+            ConnectivityService.CheckConnectivity();
         }
 
         protected override void OnSleep()
@@ -28,6 +29,7 @@ namespace ToDoApp
 
         protected override void OnResume()
         {
+            ConnectivityService.CheckConnectivity();
         }
     }
 }
