@@ -63,7 +63,7 @@ namespace ToDoApp.Services
             PostToDoItem(toDoContext);
         }
 
-        private static void PostToDoList(ToDoContext toDoContext)
+        public static void PostToDoList(ToDoContext toDoContext)
         {
             var httpService = new HttpService();
             httpService.PostToServer(toDoContext.ToDoListModel, "PostToDoList");

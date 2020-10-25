@@ -71,7 +71,29 @@ namespace ToDoApp.Services
 
             return toDoListObject;
         }
+        public static async Task<DateTime> GetLastListDataEntryTask()
+        {
+            var appListData = new StoreAppDataModel();
+            HttpClient hc = new HttpClient();
+            var Url = "https://davidnewman.pro/todo/GetToDoListData";
+            var contents = await hc.GetStringAsync(Url);
+            appListData = JsonConvert.DeserializeObject<StoreAppDataModel>(contents);
+            var getLastDateTime = appListData.LastUpdate;
 
+            return getLastDateTime;
+        }
+
+        public static async Task<DateTime> GetLastItemDataEntryTask()
+        {
+            var appItemData = new StoreItemDataModel();
+            HttpClient hc = new HttpClient();
+            var Url = "https://davidnewman.pro/todo/GetToDoItemData";
+            var contents = await hc.GetStringAsync(Url);
+            appItemData = JsonConvert.DeserializeObject<StoreItemDataModel>(contents);
+            var getLastDateTime = appItemData.LastUpdate;
+
+            return getLastDateTime;
+        }
 
     }
 }

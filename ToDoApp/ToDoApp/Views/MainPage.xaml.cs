@@ -50,6 +50,7 @@ namespace ToDoApp.Views
             {
                 await using var toDoContext = new ToDoContext();
                 myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
+                Debug.Write("");
             }
         }
 

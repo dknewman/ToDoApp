@@ -34,7 +34,7 @@ namespace ToDoApp.Views
         {
             try
             {
-                if (ConnectivityService.HasInternet == true)
+                if (ConnectivityService.HasInternet)
                 {
                     myList.ItemsSource = await HttpService.GetTodoItemTask(MainPage.ToDoLists.ToDoListModelId);
                 }
