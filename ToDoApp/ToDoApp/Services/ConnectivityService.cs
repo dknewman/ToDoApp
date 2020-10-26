@@ -49,9 +49,13 @@ namespace ToDoApp.Services
                     {
                         var lastLocalItemEntryDateTime = getLastItemTime.LastUpdate;
                     
-                        if ((lastLocalListEntryDateTime > lastServerListEntryDateTime)||(lastLocalItemEntryDateTime > lastServerItemEntryDateTime))
+                        if (lastLocalListEntryDateTime > lastServerListEntryDateTime)
                         {
                             DataService.PostToDoList(toDoContext);
+                        }
+
+                        if (lastLocalItemEntryDateTime > lastServerItemEntryDateTime)
+                        {
                             DataService.PostToDoItem(toDoContext);
                         }
                     }
