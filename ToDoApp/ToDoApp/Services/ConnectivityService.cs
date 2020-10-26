@@ -33,15 +33,15 @@ namespace ToDoApp.Services
                 HasInternet = true;
                 var lastServerListEntryDateTime = await HttpService.GetLastListDataEntryTask();
                 var lastServerItemEntryDateTime = await HttpService.GetLastListDataEntryTask();
-                
                 var toDoContext = new ToDoContext();
+
                 var getLastListTime = toDoContext.ToDoListModel
                     .OrderByDescending(x => x.LastUpdate)
                     .FirstOrDefault();
                 if (getLastListTime != null)
                 {
                     var lastLocalListEntryDateTime = getLastListTime.LastUpdate;
-
+                    
                     var getLastItemTime = toDoContext.ToDoItemModel
                         .OrderByDescending(x => x.LastUpdate)
                         .FirstOrDefault();
