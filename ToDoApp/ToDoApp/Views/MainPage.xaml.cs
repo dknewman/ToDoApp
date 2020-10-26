@@ -46,31 +46,48 @@ namespace ToDoApp.Views
 
         private async Task RefreshListView()
         {
-            if (ConnectivityService.HasInternet)
+            try
             {
-                myList.ItemsSource = await HttpService.GetToDoListTask();
-                if (!myList.ItemsSource.OfType<ToDoListModel>().Any())
+                if (ConnectivityService.HasInternet)
                 {
-                    await DisplayAlert("Welcome to the ToDo App!", "Add a new list and get started", "OK");
+                    myList.ItemsSource = await HttpService.GetToDoListTask();
+                    if (!myList.ItemsSource.OfType<ToDoListModel>().Any())
+                    {
+                        await DisplayAlert("Welcome to the ToDo App!", "Add a new list and get started", "OK");
+                    }
+                }
+                else
+                {
+                    await using var toDoContext = new ToDoContext();
+                    myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
+                    Debug.Write("");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                await using var toDoContext = new ToDoContext();
-                myList.ItemsSource = await toDoContext.ToDoListModel.ToListAsync();
-                Debug.Write("");
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
             }
         }
 
         public async void OnDelete(object sender, EventArgs e)
         {
-            var mi = ((MenuItem)sender);
-            var toDoDelete = (ToDoListModel)mi.CommandParameter;
-            var deleteConfirmation = await DisplayAlert("Delete ToDo List", "Are you sure you want to delete " + toDoDelete.ListName + "?", "OK", "Cancel");
-            if (deleteConfirmation)
+            try
             {
-                await DataService.DeleteToDoList(toDoDelete);
-                await RefreshListView();
+                var mi = ((MenuItem) sender);
+                var toDoDelete = (ToDoListModel) mi.CommandParameter;
+                var deleteConfirmation = await DisplayAlert("Delete ToDo List",
+                    "Are you sure you want to delete " + toDoDelete.ListName + "?", "OK", "Cancel");
+                if (deleteConfirmation)
+                {
+                    await DataService.DeleteToDoList(toDoDelete);
+                    await RefreshListView();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
             }
         }
 

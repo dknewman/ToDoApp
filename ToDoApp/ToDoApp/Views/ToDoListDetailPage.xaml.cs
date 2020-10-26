@@ -55,13 +55,22 @@ namespace ToDoApp.Views
         }
         public async void OnDelete(object sender, EventArgs e)
         {
-            var mi = ((MenuItem)sender);
-            var toDoDelete = (ToDoItemModel)mi.CommandParameter;
-            var deleteConfirmation = await DisplayAlert("Delete ToDo Item", "Are you sure you want to delete " + toDoDelete.ToDoItem + "?", "OK", "Cancel");
-            if (deleteConfirmation)
+            try
             {
-                await DataService.DeleteToDoItem(toDoDelete);
-                await RefreshListView();
+                var mi = ((MenuItem) sender);
+                var toDoDelete = (ToDoItemModel) mi.CommandParameter;
+                var deleteConfirmation = await DisplayAlert("Delete ToDo Item",
+                    "Are you sure you want to delete " + toDoDelete.ToDoItem + "?", "OK", "Cancel");
+                if (deleteConfirmation)
+                {
+                    await DataService.DeleteToDoItem(toDoDelete);
+                    await RefreshListView();
+                }
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
             }
         }
     }

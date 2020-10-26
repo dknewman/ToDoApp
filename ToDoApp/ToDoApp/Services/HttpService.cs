@@ -24,20 +24,36 @@ namespace ToDoApp.Services
         {
             if (ConnectivityService.HasInternet)
             {
-                PostData(listOrItemObject, postType);
+                try
+                {
+                    PostData(listOrItemObject, postType);
+                }
+                catch (Exception ex)
+                {
+                    //Handle exception - Typically I use a service like rollbar 
+                    Debug.WriteLine(ex);
+                }
             }
         }
 
         private static void PostData(object listOrItemObject, string postType)
         {
-            string jsonData = JsonConvert.SerializeObject(listOrItemObject);
-            var convertedJsonStr = JsonConvert.ToString(jsonData);
-            var client = new RestClient($"https://davidnewman.pro/todo/{postType}");
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
-            request.AddHeader("Content-Type", "application/json");
-            request.AddParameter("application/json", convertedJsonStr, ParameterType.RequestBody);
-            IRestResponse response = client.Execute(request);
+            try
+            {
+                string jsonData = JsonConvert.SerializeObject(listOrItemObject);
+                var convertedJsonStr = JsonConvert.ToString(jsonData);
+                var client = new RestClient($"https://davidnewman.pro/todo/{postType}");
+                client.Timeout = -1;
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                request.AddParameter("application/json", convertedJsonStr, ParameterType.RequestBody);
+                IRestResponse response = client.Execute(request);
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
+            }
         }
 
         public static async Task<ObservableCollection<ToDoListModel>> GetToDoListTask()

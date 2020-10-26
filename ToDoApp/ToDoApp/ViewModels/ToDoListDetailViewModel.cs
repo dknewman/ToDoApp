@@ -21,7 +21,6 @@ namespace ToDoApp.ViewModels
         private async void OnAddListAsync(object obj)
         {
             await Application.Current.MainPage.Navigation.PushModalAsync(new CreateNewItemPage());
-
         }
 
         private string _toDoListItemText;
