@@ -125,34 +125,42 @@ namespace ToDoApp.Services
         }
         public static async Task SyncSqliteToServer()
         {
-            var lastServerListEntryDateTime = await HttpService.GetLastListDataEntryTask();
-            var lastServerItemEntryDateTime = await HttpService.GetLastListDataEntryTask();
-            var toDoContext = new ToDoContext();
-
-            var getLastListTime = toDoContext.ToDoListModel
-                .OrderByDescending(x => x.LastUpdate)
-                .FirstOrDefault();
-            if (getLastListTime != null)
+            try
             {
-                var lastLocalListEntryDateTime = getLastListTime.LastUpdate;
+                var lastServerListEntryDateTime = await HttpService.GetLastListDataEntryTask();
+                var lastServerItemEntryDateTime = await HttpService.GetLastListDataEntryTask();
+                var toDoContext = new ToDoContext();
 
-                var getLastItemTime = toDoContext.ToDoItemModel
+                var getLastListTime = toDoContext.ToDoListModel
                     .OrderByDescending(x => x.LastUpdate)
                     .FirstOrDefault();
-                if (getLastItemTime != null)
+                if (getLastListTime != null)
                 {
-                    var lastLocalItemEntryDateTime = getLastItemTime.LastUpdate;
+                    var lastLocalListEntryDateTime = getLastListTime.LastUpdate;
 
-                    if (lastLocalListEntryDateTime > lastServerListEntryDateTime)
+                    var getLastItemTime = toDoContext.ToDoItemModel
+                        .OrderByDescending(x => x.LastUpdate)
+                        .FirstOrDefault();
+                    if (getLastItemTime != null)
                     {
-                        DataService.PostToDoList(toDoContext);
-                    }
+                        var lastLocalItemEntryDateTime = getLastItemTime.LastUpdate;
 
-                    if (lastLocalItemEntryDateTime > lastServerItemEntryDateTime)
-                    {
-                        DataService.PostToDoItem(toDoContext);
+                        if (lastLocalListEntryDateTime > lastServerListEntryDateTime)
+                        {
+                            PostToDoList(toDoContext);
+                        }
+
+                        if (lastLocalItemEntryDateTime > lastServerItemEntryDateTime)
+                        {
+                            PostToDoItem(toDoContext);
+                        }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
             }
         }
     }
