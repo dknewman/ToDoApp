@@ -61,9 +61,16 @@ namespace ToDoApp.Services
             ObservableCollection<ToDoListModel> toDoListObject = new ObservableCollection<ToDoListModel>();
             HttpClient hc = new HttpClient();
             var listUrl = "https://davidnewman.pro/todo/GetToDoList";
-            var listContents = await hc.GetStringAsync(listUrl);
-            toDoListObject = JsonConvert.DeserializeObject<ObservableCollection<ToDoListModel>>(listContents);
-
+            try
+            {
+                var listContents = await hc.GetStringAsync(listUrl);
+                toDoListObject = JsonConvert.DeserializeObject<ObservableCollection<ToDoListModel>>(listContents);
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
+            }
             return toDoListObject;
         }
 
@@ -72,8 +79,16 @@ namespace ToDoApp.Services
             ObservableCollection<ToDoItemModel> toDoItemObject = new ObservableCollection<ToDoItemModel>();
             HttpClient hc = new HttpClient();
             var Url = "https://davidnewman.pro/todo/GetToDoItem/" + toDoListModelId;
-            var contents = await hc.GetStringAsync(Url);
-            toDoItemObject = JsonConvert.DeserializeObject<ObservableCollection<ToDoItemModel>>(contents);
+            try
+            {
+                var contents = await hc.GetStringAsync(Url);
+                toDoItemObject = JsonConvert.DeserializeObject<ObservableCollection<ToDoItemModel>>(contents);
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
+            }
 
             return toDoItemObject;
         }
@@ -82,9 +97,16 @@ namespace ToDoApp.Services
             var toDoListObject = new ToDoListModel();
             HttpClient hc = new HttpClient();
             var listUrl = "https://davidnewman.pro/todo/GetToDoList";
-            var listContents = await hc.GetStringAsync(listUrl);
-            toDoListObject = JsonConvert.DeserializeObject<ToDoListModel>(listContents);
-
+            try
+            {
+                var listContents = await hc.GetStringAsync(listUrl);
+                toDoListObject = JsonConvert.DeserializeObject<ToDoListModel>(listContents);
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
+            }
             return toDoListObject;
         }
         public static async Task<DateTime> GetLastListDataEntryTask()
@@ -92,11 +114,19 @@ namespace ToDoApp.Services
             var appListData = new StoreAppDataModel();
             HttpClient hc = new HttpClient();
             var Url = "https://davidnewman.pro/todo/GetToDoListData";
-            var contents = await hc.GetStringAsync(Url);
-            appListData = JsonConvert.DeserializeObject<StoreAppDataModel>(contents);
-            var getLastDateTime = appListData.LastUpdate;
+            try
+            {
+                var contents = await hc.GetStringAsync(Url);
+                appListData = JsonConvert.DeserializeObject<StoreAppDataModel>(contents);
+            }
 
-            return getLastDateTime;
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
+            }
+            
+            return appListData.LastUpdate; ;
         }
 
         public static async Task<DateTime> GetLastItemDataEntryTask()
@@ -104,11 +134,18 @@ namespace ToDoApp.Services
             var appItemData = new StoreItemDataModel();
             HttpClient hc = new HttpClient();
             var Url = "https://davidnewman.pro/todo/GetToDoItemData";
-            var contents = await hc.GetStringAsync(Url);
-            appItemData = JsonConvert.DeserializeObject<StoreItemDataModel>(contents);
-            var getLastDateTime = appItemData.LastUpdate;
-
-            return getLastDateTime;
+            try
+            {
+                var contents = await hc.GetStringAsync(Url);
+                appItemData = JsonConvert.DeserializeObject<StoreItemDataModel>(contents);
+            }
+            catch (Exception ex)
+            {
+                //Handle exception - Typically I use a service like rollbar 
+                Debug.WriteLine(ex);
+            }
+           
+            return appItemData.LastUpdate; ;
         }
 
     }
