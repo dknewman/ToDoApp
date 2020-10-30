@@ -128,7 +128,7 @@ namespace ToDoApp.Services
             try
             {
                 var lastServerListEntryDateTime = await HttpService.GetLastListDataEntryTask();
-                var lastServerItemEntryDateTime = await HttpService.GetLastListDataEntryTask();
+                var lastServerItemEntryDateTime = await HttpService.GetLastItemDataEntryTask();
                 var toDoContext = new ToDoContext();
 
                 var getLastListTime = toDoContext.ToDoListModel
